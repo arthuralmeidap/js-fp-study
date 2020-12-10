@@ -1,41 +1,50 @@
-import { Setoid } from "../Setoid"
+import { NumberSetoid, StringSetoid, Setoid } from "../Setoid"
 
 describe('Algebras Fantasy Land', () => {
   describe('Setoid', () => {
+
+    describe('basic setoid for strings', () => {
+      it('should be true if equals', () => {
+        expect(StringSetoid.equals('a', 'a')).toBeTruthy
+      })
+
+      it('should be false if not equals', () => {
+        expect(StringSetoid.equals('a', 'b')).toBeTruthy
+      })
+
+      it('should be case sensitive', () => {
+        expect(StringSetoid.equals('a', 'A')).toBeFalsy()
+      })
+
+      describe('custom case insensitive', () => {
+        it('should be case insensitive', () => {
+          const caseInsensitive: Setoid<string> = {
+            equals: (x, y) => String(x).toLocaleLowerCase() === String(y).toLowerCase()
+          }
+
+          expect(caseInsensitive.equals('a', 'A')).toBeTruthy()
+        })
+      })
+    })
+
     it('should be true if equals', () => {
-      const setoidNumber: Setoid<number> = {
-          equals: (x, y) => Number(x) === Number(y)
-        }
-        
-        expect(setoidNumber.equals(1, 1)).toBeTruthy()
+        expect(NumberSetoid.equals(1, 1)).toBeTruthy
     })
     
     it('should be false if not equals', () => {
-      const setoidNumber: Setoid<number> = {
-          equals: (x, y) => Number(x) === Number(y)
-        }
-        
-        expect(setoidNumber.equals(1, 2)).toBeFalsy()
+        expect(NumberSetoid.equals(1, 2)).toBeFalsy()
     })
 
     describe('Laws', () => {
       it('reflexivity', () => {
         const a = 1
-        const setoidNumber: Setoid<number> = {
-          equals: (x, y) => Number(x) === Number(y)
-        }
-        
-        expect(setoidNumber.equals(a, a)).toBeTruthy()
+        expect(NumberSetoid.equals(a, a)).toBeTruthy()
       })
       it('symmetry', () => {
         const a = 1
         const b = 1
-        const setoidNumber: Setoid<number> = {
-          equals: (x, y) => Number(x) === Number(y)
-        }
-        
-        expect(setoidNumber.equals(a, b)).toEqual(
-          setoidNumber.equals(b, a)
+        expect(NumberSetoid.equals(a, b)).toEqual(
+          NumberSetoid.equals(b, a)
         )
       })
 
@@ -43,25 +52,17 @@ describe('Algebras Fantasy Land', () => {
         const a = 1
         const b = 1
         const c = 1
-        const setoidNumber: Setoid<number> = {
-          equals: (x, y) => Number(x) === Number(y)
-        }
-        
         // se a e b são iguais
-        expect(setoidNumber.equals(a, b)).toBeTruthy()
+        expect(NumberSetoid.equals(a, b)).toBeTruthy()
         // e b e c são iguais
-        expect(setoidNumber.equals(b, c)).toBeTruthy()
+        expect(NumberSetoid.equals(b, c)).toBeTruthy()
         //portanto a e c são iguais
-        expect(setoidNumber.equals(a, c)).toBeTruthy()
+        expect(NumberSetoid.equals(a, c)).toBeTruthy()
       })
     })
 
     it('basic setoid for numbers', () => {
-      const setoidNumber: Setoid<number> = {
-        equals: (x, y) => Number(x) === Number(y)
-      }
-
-      expect(setoidNumber.equals(1, 1)).toBeTruthy()
+      expect(NumberSetoid.equals(1, 1)).toBeTruthy()
     })
 
     it('setoid for object', () => {
