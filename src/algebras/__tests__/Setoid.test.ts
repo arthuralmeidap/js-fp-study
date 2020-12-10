@@ -2,6 +2,21 @@ import { Setoid } from "../Setoid"
 
 describe('Algebras Fantasy Land', () => {
   describe('Setoid', () => {
+    it('should be true if equals', () => {
+      const setoidNumber: Setoid<number> = {
+          equals: (x, y) => Number(x) === Number(y)
+        }
+        
+        expect(setoidNumber.equals(1, 1)).toBeTruthy()
+    })
+    
+    it('should be false if not equals', () => {
+      const setoidNumber: Setoid<number> = {
+          equals: (x, y) => Number(x) === Number(y)
+        }
+        
+        expect(setoidNumber.equals(1, 2)).toBeFalsy()
+    })
 
     describe('Laws', () => {
       it('reflexivity', () => {
